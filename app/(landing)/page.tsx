@@ -433,7 +433,7 @@ const LandingPage = () => {
   </div>
 </section>
 
- <section className="w-full h-screen py-12 md:py-24 lg:py-32 xl:py-48">
+ <section className="mb-20 mt-20 sm:mt-30 flex flex-col items-center justify-center text-center">
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 items-center">
           <div className="flex flex-col justify-center space-y-4 text-center">
@@ -467,7 +467,7 @@ const LandingPage = () => {
         </div>
       </div>
     </section>
-    <section className="w-full h-screen py-8 md:py-16 lg:py-24 xl:py-32">
+    <section className="mb-20 mt-20 sm:mt-30 flex flex-col items-center justify-center text-center">
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 items-center">
           <div className="flex flex-col justify-center space-y-4 text-center">
@@ -477,45 +477,64 @@ const LandingPage = () => {
             </h1>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">What can I create with Dipassio AI?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    We have copywriting tools for everything you need to start and run your business! You can write blog posts, product descriptions, story, email, ad copy, and even Instagram captions with Dipassio AI
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Can I use the outputs from Dipassio's AI tools for commercial purposes?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    Absolutely. When you use our AI tools to generate outputs, you are free to use them for your commercial activities. Our tools are designed to aid your endeavors, whether they are personal or commercial.
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Does Dipassio AI have a free trial?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    We don’t offer a free trial for users at this time. However, we offer a free version of Dipassio AI that includes top quality essential functionality. We believe this is a better way to allow users to become familiar with Dipassio AI.
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">What payment methods do you accept?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    We strive to offer convenient and secure payment options for our users. We accept major credit cards including Visa, MasterCard, American Express, and Discover. All payments are processed securely through Stripe, a leading online payment platform, ensuring your transactions are safe and reliable.
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-5">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Can I cancel my subscription?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    Yes, customers can cancel their subscription at any time.
+
+To cancel your subscription, kindly follow the outlined steps:
+
+1. Please visit our website and proceed to log in to your account.
+2. After successful login, locate and click on the account icon, which can be found at the upper right corner of the webpage.
+3. From the ensuing options, please select "Manage subscription".
+4. Within the "Manage subscription" section, your current subscription details will be displayed. To proceed with the cancellation, click on "Cancel Plan".
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-6">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Will you add new tools to Dipassio AI?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    Yes! We're always updating our tools, so let us know what else you'd like to see. We're constantly working to improve our platform and provide the best tools possible.
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-7">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Is it accessible?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">How does Dipassio AI handle sensitive data?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-aut text-justify">
+                    Dipassio AI upholds strict policies to ensure the privacy and security of user data. This includes industry-standard encryption of all data, strict access control measures, and no sharing or selling of personal information with third parties.
+                   </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-8">
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">How long does Dipassio AI retain the data?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    Dipassio AI retains data only as long as is necessary for the purposes for which it was collected. When you delete any generated results or data, it is permanently removed from our systems.
+                   </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-9">
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Does Dipassio AI use customer data to train its AI systems?</AccordionTrigger>
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
+                    No, your data is your own. We do not use customer data to train our AI systems. Our algorithms are designed and developed independently of user data.
                    </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -533,7 +552,7 @@ const LandingPage = () => {
           <span className="rounded-full border border-zinc-200 mr-2">
             <Logo />
           </span>
-          <span>ACME</span>
+          <span>DIPASSIO</span>
         </p>
       </Link>
     </div>
@@ -605,10 +624,10 @@ const LandingPage = () => {
   </div>
   <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-zinc-700">
     <div>
-      <span>&copy; 2020 ACME, Inc. All rights reserved.</span>
+      <span>&copy; 2020 Dipassio SL All rights reserved.</span>
     </div>
     <div className="flex items-center">
-      <span className="text-white">Crafted with love in 2023 by</span>
+      <span className="text-white">Crafted with love 💙 in 2023 by</span>
       <p href="https://dipass.io" aria-label="Dipass.io Link">
         <Image
           src="/logo color 512 4.svg"
