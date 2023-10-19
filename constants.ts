@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-export const MAX_FREE_COUNTS = 5;
+export const MAX_FREE_COUNTS = 40;
 
 export const tools = [
   {
@@ -137,7 +137,7 @@ export const rools = [
     href: '/high-converting',
   },
   {
-    label: 'Headlines and ',
+    label: 'Twitter Engagement',
     icon: Files,
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/10",
@@ -151,7 +151,7 @@ export const hools = [
   {
     label: 'Write Article',
     icon: Target,
-    href: '/write-article',
+    href: '/blog-seo-article',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
@@ -163,18 +163,18 @@ export const hools = [
     bgColor: "bg-pink-400/10",
   },
   {
-    label: 'Event Promotion',
+    label: 'Rewrite Article',
     icon: CalendarClock,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
-    href: '/event-promotion',
+    href: '/rewrite',
   },
   {
-    label: 'Discounts & Sales',
+    label: 'Blog Metadescriptions',
     icon: Files,
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/10",
-    href: '/discounts-sales',
+    href: '/metadescription',
   },
 
   
