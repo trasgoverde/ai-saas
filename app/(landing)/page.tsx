@@ -31,7 +31,7 @@ const LandingPage = () => {
             
               href='/'
               className='flex z-30 font-bold pr-10 text-lg'>
-              <span>Dipassio | Digital Developments</span>
+              <span>Dipassio | AI Assistant</span>
             </Link>
 
             <MobileNav />
@@ -97,27 +97,35 @@ const LandingPage = () => {
       <MaxWidthWrapper className="mb-12 mt-12 sm:mt-30 flex flex-col items-center justify-center text-center">
         <div className="mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-gray-300 hover:bg-white/50">
           <p>
-            Dipassio, Your Digital Passport Through Innovation, Boost your Projects
-            and Save Money 💸!
+          🎉 Unleash the Power of AI: Revolutionizing Copywriting, SEO, Email Generation, Content Generation, and PDF AI Chat!
           </p>
+          <Link
+                href='/sign-up' // Provide the href attribute here
+                className={buttonVariants({
+                  size: 'sm',
+                  variant: 'secondary',
+                })}>
+                Get started{' '}
+                <ArrowRight className='ml-1.5 h-5 w-5' />
+              </Link>
         </div>
         <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl mt-5">
-          Professional Solutions{" "}
-          <span className="text-blue-600">Powerful Applications </span>{" "}
-          Tailored to your Business Needs
+          Professional AI Solutions{" "}
+          <span className="text-blue-600">For the Real World </span>{" "}
+          <p>Tailored fro your Business</p>
         </h1>
         <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
-          Dipassio is a digital product agency that focuses on strategy and
-          design. 
+        DIPASSIO AI, exploring its diverse functionalities, and demonstrating how it can transform your approach to copywriting, SEO, email generation, content generation, and PDF AI chat.
         </p>
         <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
-          Specifications | Development | Delivery | Deployment
+        Copywriting, SEO, Email Generation, Content Generation, and PDF AI Chat
         </p>
         <span className='items-center text-lg space-x-8 sm:flex'>
         <Link
           className={buttonVariants({
-            size: "lg",
+            size: "md",
             className: "mt-5",
+            variant: 'seconday',
           })}
           href="/dashboard"
           target="_blank">
@@ -483,7 +491,7 @@ const LandingPage = () => {
                    </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Can I use the outputs from Dipassio's AI tools for commercial purposes?</AccordionTrigger>
+                <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">Can I use the outputs for commercial purposes?</AccordionTrigger>
                     <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
                     Absolutely. When you use our AI tools to generate outputs, you are free to use them for your commercial activities. Our tools are designed to aid your endeavors, whether they are personal or commercial.
                    </AccordionContent>
