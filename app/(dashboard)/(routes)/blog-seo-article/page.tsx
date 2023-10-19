@@ -15,11 +15,10 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { Loader } from "@/components/loader";
+import { Loader } from "@/components/loader"; // Import the Loader component
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-
 import { formSchema } from "./constants";
 
 const BlogSeoPage = () => {
@@ -30,29 +29,30 @@ const BlogSeoPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prompt: ""
-    }
+      prompt: "",
+    },
   });
 
   const isLoading = form.formState.isSubmitting;
-  
+
   // Your prompt for generating content
-  const contentPrompt = "Write an SEO-optimized Long Form article with a minimum of 2000 words..."; // Insert your entire prompt here
-  
+  const contentPrompt =
+    "I want you to act as a Content writer very proficient SEO that speaks and writes fluently English*. Write an SEO-optimized Long Form article with a minimum of 2000 words. Please use a minimum of 10 headings and sub headings, included H1 heading, H2 headings, and H3, H4. The final paragraph should be a conclusion. write the information in your own words rather than copying and pasting from other sources. also double-check for plagiarism because I need pure unique content, write the content in a conversational style as if it were written by a human. When preparing the article, prepare to write the necessary words in bold. I want you to write content so that it can outrank other websites. Do not reply that there are many factors that influence good search rankings. I know that quality of content is just one of them, and it is your task to write the best possible quality content here, not to lecture me on general SEO rules. I give you the Title 'make money online' of an article that we need to outrank in Google. Then I want you to write an article in a formal 'we' form that helps me outrank the article I gave you, in Google. Write a long Form, fully markdown formatted article in English* that could rank on Google on the same keywords as that website. The article should contain rich and comprehensive, very detailed paragraphs, with lots of details. Do not echo my prompt. Let the article be a long Form article of a minimum of 2000 words. Do not remind me what I asked you for. Do not apologize. Do not self-reference. Do not use generic filler phrases. Do use useful subheadings with keyword-rich titles. Get to the point precisely and accurately. Make headings bold and appropriate for h tags."; // Insert your entire prompt here
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
       const newMessages = [...messages, userMessage];
-      
+
       // Send a request to OpenAI to generate content
-      const response = await axios.post('/api/blog-seo-article', { messages: newMessages, prompt: contentPrompt });
-      
+      const response = await axios.post("/api/blog-seo-article", { messages: newMessages, prompt: contentPrompt });
+
       // Append the generated content to the messages
       setMessages((current) => [...current, userMessage, response.data]);
-      
+
       form.reset();
-    } catch (error: any) {
-      if (error?.response?.status === 403) {
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
         proModal.onOpen();
       } else {
         toast.error("Something went wrong.");
@@ -60,9 +60,9 @@ const BlogSeoPage = () => {
     } finally {
       router.refresh();
     }
-  }
+  };
 
-  return ( 
+  return (
     <div>
       <Heading
         title="Conversation"
@@ -74,15 +74,15 @@ const BlogSeoPage = () => {
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
-            <form 
-              onSubmit={form.handleSubmit(onSubmit)} 
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
               className="
-                rounded-lg 
-                border 
-                w-full 
-                p-4 
-                px-3 
-                md:px-6 
+                rounded-lg
+                border
+                w-full
+                p-4
+                px-3
+                md:px-6
                 focus-within:shadow-sm
                 grid
                 grid-cols-12
@@ -96,8 +96,8 @@ const BlogSeoPage = () => {
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        disabled={isLoading} 
-                        placeholder="Write here the Article specifications needed, Keywords, Products or Services" 
+                        disabled={isLoading}
+                        placeholder="Write here the Article specifications needed, Keywords, Products or Services"
                         {...field}
                       />
                     </FormControl>
@@ -116,22 +116,18 @@ const BlogSeoPage = () => {
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label="No conversation started." />
-          )}
+          {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
-              <div 
-                key={message.content} 
+              <div
+                key={message.content}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">
-                  {message.content}
-                </p>
+                <p className="text-sm">{message.content}</p>
               </div>
             ))}
           </div>
@@ -139,6 +135,6 @@ const BlogSeoPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default BlogSeoPage;
