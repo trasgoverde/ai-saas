@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Dipassio | Digital Passport Through Innovation',
-  description: 'Digital Passport Through Innovation',
+  title: 'Dipassio AI | Your Digital assistant',
+  description: 'AI for your Digital Passport Through Innovation',
 }
 
 export default function RootLayout({
