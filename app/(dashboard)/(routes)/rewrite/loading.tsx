@@ -4,7 +4,7 @@ import { RefreshCw } from 'lucide-react';
 export default function Loading() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <p className="text-3xl">Blog SEO Articles</p>
+      <p className="text-3xl">Rewrite Articles</p>
       <div className="mt-4">
         <RefreshCw
           size={100} // Adjust the size as needed

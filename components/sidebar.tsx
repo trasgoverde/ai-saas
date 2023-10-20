@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from 'next/font/google'
-import { Boxes, Target, Files, Rocket, CalendarClock, LayoutDashboard, Settings } from "lucide-react";
+import { FileText, Share2, Magnet, MailPlus, Boxes, Target, Files, Rocket, CalendarClock, LayoutDashboard, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -19,35 +19,35 @@ const routes = [
     color: "text-sky-500"
   },
   {
-    label: 'Pdf Analysis',
-    icon: Target,
+    label: 'Pdfs',
+    icon: FileText,
     href: '/pdf-files',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   {
-    label: 'Email Generation',
-    icon: Boxes,
+    label: 'Emails',
+    icon: MailPlus,
     href: '/email-generation',
     color: "text-pink-400",
     bgColor: "bg-pink-400/10",
   },
   {
-    label: 'Social Media Ads',
-    icon: CalendarClock,
+    label: 'Social Media',
+    icon: Share2,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     href: '/ads-social-media',
   },
   {
-    label: 'Ecommerce SEO',
-    icon: Files,
+    label: 'SEO',
+    icon: Magnet,
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/10",
     href: '/ecommerce-seo',
   },
   {
-    label: 'Long Term Articles for Blogs',
+    label: 'Blogs',
     icon: Rocket,
     color: "text-green-500",
     bgColor: "bg-green-500/10",

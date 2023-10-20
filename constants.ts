@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from 'next/font/google'
-import { Boxes, Target, Files, Rocket, CalendarClock, LayoutDashboard, Settings } from "lucide-react";
+import {FileText, Codesandbox, PencilRuler, Layers, CircuitBoard, PenSquare, Layers3, TrendingUp, WayPoints, Snowflake, Linkedin, Twitter, Send, FlaskConical,  Share2, Magnet, Facebook, PercentSquare, Boxes, MailPlus, Target, Files, Rocket, CalendarRange, CalendarClock, LayoutDashboard, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -12,35 +12,35 @@ export const MAX_FREE_COUNTS = 40;
 
 export const tools = [
   {
-    label: 'Pdf Analysis',
-    icon: Target,
+    label: 'Pdf AI',
+    icon: FileText,
     href: '/pdf-files',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   {
-    label: 'Email Generation',
-    icon: Boxes,
+    label: 'Emailing',
+    icon: MailPlus,
     href: '/email-generation',
     color: "text-pink-400",
     bgColor: "bg-pink-400/10",
   },
   {
-    label: 'Social Media Ads',
-    icon: CalendarClock,
+    label: 'Social Media',
+    icon: Share2,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     href: '/ads-social-media',
   },
   {
-    label: 'Ecommerce SEO',
-    icon: Files,
+    label: 'SEO',
+    icon: Magnet,
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/10",
     href: '/ecommerce-seo',
   },
   {
-    label: 'Long Term Articles for Blogs',
+    label: 'Blogs',
     icon: Rocket,
     color: "text-green-500",
     bgColor: "bg-green-500/10",
@@ -51,29 +51,29 @@ export const tools = [
 export const pools = [
   {
     label: 'Cold Outbound',
-    icon: Target,
+    icon: Snowflake,
     href: '/cold-email',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   {
     label: 'Follow up Email',
-    icon: Boxes,
+    icon: Send,
     href: '/follow-email',
     color: "text-pink-400",
     bgColor: "bg-pink-400/10",
   },
   {
     label: 'Event Promotion',
-    icon: CalendarClock,
+    icon: CalendarRange,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     href: '/event-promo',
   },
   {
     label: 'Discounts & Sales',
-    icon: Files,
-    color: "text-yellow-500",
+    icon: PercentSquare,
+    color: "text-red-500",
     bgColor: "bg-yellow-500/10",
     href: '/sales-discounts',
   },
@@ -84,28 +84,28 @@ export const pools = [
 export const sools = [
   {
     label: 'Linkedin Posts',
-    icon: Target,
+    icon: Linkedin,
     href: '/linkedin-post',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   {
     label: 'Google Ads',
-    icon: Boxes,
+    icon: FlaskConical,
     href: '/google-ads',
     color: "text-pink-400",
     bgColor: "bg-pink-400/10",
   },
   {
     label: 'Facebooks Ads',
-    icon: CalendarClock,
+    icon: Facebook,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     href: '/facebook-ads',
   },
   {
     label: 'Twitter Engagement',
-    icon: Files,
+    icon: Twitter,
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/10",
     href: '/twitter-engagement',
@@ -117,7 +117,7 @@ export const sools = [
 export const rools = [
   {
     label: 'Landing SEO',
-    icon: Target,
+    icon: Codesandbox,
     href: '/landing-seo',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
@@ -131,7 +131,7 @@ export const rools = [
   },
   {
     label: 'High Converting SEO',
-    icon: CalendarClock,
+    icon: TrendingUp,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     href: '/high-converting',
@@ -150,28 +150,28 @@ export const rools = [
 export const hools = [
   {
     label: 'Write Article',
-    icon: Target,
+    icon: PencilRuler,
     href: '/blog-seo-article',
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   {
     label: 'Generate Topic Ideas',
-    icon: Boxes,
+    icon: Layers,
     href: '/topic-idea',
     color: "text-pink-400",
     bgColor: "bg-pink-400/10",
   },
   {
     label: 'Rewrite Article',
-    icon: CalendarClock,
+    icon: PenSquare,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     href: '/rewrite',
   },
   {
     label: 'Blog Metadescriptions',
-    icon: Files,
+    icon: CircuitBoard,
     color: "text-yellow-500",
     bgColor: "bg-yellow-500/10",
     href: '/metadescription',

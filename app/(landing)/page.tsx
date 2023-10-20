@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Navbar } from '@/components/Navbar';
 import { UserButton } from "@clerk/nextjs";
 import MobileNav from '@/components/MobileNav';
-import newsletter from '@/components/newsletter';
+import Newsletter from '@/components/newsletter';
 import { Input } from "@/components/ui/input";
 import {
   Accordion,
@@ -14,8 +14,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Logo from 'components/icons/Logo';
-import GitHub from 'components/icons/GitHub';
+import TypewriterComponent from "typewriter-effect";
+import Logo from '@/components/icons/Logo';
+import GitHub from '@/components/icons/GitHub';
 
 
 const LandingPage = () => {
@@ -84,7 +85,7 @@ const LandingPage = () => {
                   size: 'sm',
                 })}>
                 Get started{' '}
-                <ArrowRight className='ml-1.5 h-5 w-5' />
+                <ArrowRight className='ml-1.5 h-5 w-5  transition-transform transform hover:translate-x-2' />
               </Link>
 
               
@@ -105,15 +106,15 @@ const LandingPage = () => {
                   size: 'sm',
                   variant: 'secondary',
                 })}>
-                Get started{' '}
-                <ArrowRight className='ml-1.5 h-5 w-5' />
+                Read More!{' '}
+                <ArrowRight className='ml-1.5 h-5 w-5  transition-transform transform hover:translate-x-2' />
               </Link>
         </div>
         <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl mt-5">
-          Professional AI Solutions{" "}
-          <span className="text-blue-600">For the Real World </span>{" "}
-          <p>Tailored fro your Business</p>
+        Real World AI{" "}
+          <p className="text-blue-600">Professional AI Solution </p>{" "}
         </h1>
+ 
         <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
         DIPASSIO AI, exploring its diverse functionalities, and demonstrating how it can transform your approach to copywriting, SEO, email generation, content generation, and PDF AI chat.
         </p>
@@ -125,11 +126,11 @@ const LandingPage = () => {
           className={buttonVariants({
             size: "md",
             className: "mt-5",
-            variant: 'seconday',
+            variant: 'secondary',
           })}
           href="/dashboard"
           target="_blank">
-          Get Started! <ArrowRight className="ml-2 h-5 w-5" />
+          Read More! <ArrowRight className="ml-2 h-5 w-5 transition-transform transform hover:translate-x-2" />
         </Link>
         
         
@@ -140,7 +141,7 @@ const LandingPage = () => {
           })}
           href="/dashboard"
           target="_blank">
-          Get Started! <ArrowRight className="ml-2 h-5 w-5" />
+          Start for Free <ArrowRight className="ml-2 h-5 w-5  transition-transform transform hover:translate-x-2" />
         </Link>
         </span>
         
@@ -574,7 +575,7 @@ To cancel your subscription, kindly follow the outlined steps:
           </Link>
         </li>
         <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/">
+          <Link href="/about-us">
             <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
               About
             </p>
@@ -604,14 +605,14 @@ To cancel your subscription, kindly follow the outlined steps:
           </p>
         </li>
         <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/">
+          <Link href="/privacy">
             <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
               Privacy Policy
             </p>
           </Link>
         </li>
         <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/">
+          <Link href="/terms">
             <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
               Terms of Use
             </p>
@@ -619,7 +620,7 @@ To cancel your subscription, kindly follow the outlined steps:
         </li>
       </ul>
     </div>
-    <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-white">
+    <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-gray-500">
       <div className="flex space-x-6 items-center h-10">
         <p
           aria-label="Github Repository"
@@ -632,13 +633,13 @@ To cancel your subscription, kindly follow the outlined steps:
   </div>
   <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-zinc-700">
     <div>
-      <span>&copy; 2020 Dipassio SL All rights reserved.</span>
+      <span>&copy; 2023-2024 Dipassio SL All rights reserved.</span>
     </div>
     <div className="flex items-center">
-      <span className="text-white">Crafted with love 💙 in 2023 by</span>
+      <span className="text-white">Crafted with love ❤️ in 2023 by</span>
       <p href="https://dipass.io" aria-label="Dipass.io Link">
         <Image
-          src="/logo color 512 4.svg"
+          src="rhinologo best.svg"
           height="32"
           width="32"
           alt="Dipass.io Logo"
