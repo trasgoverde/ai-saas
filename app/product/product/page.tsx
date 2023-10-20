@@ -1,12 +1,12 @@
-"use client";
+
 
 import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-import { sools } from "@/constants";
+// import { sools } from "@/constants";
 
 export default function ProductPage() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function ProductPage() {
       <div>
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
-          Project Dashboard
+          Product Dashboard
         </h2>
         <h2 className="text-2xl md:text-4xl font-bold text-center">
           Let&apos;s Get Started, !!
