@@ -37,7 +37,7 @@ const PrivacyPage = () => {
   
               <div className='hidden items-center text-lg space-x-8 sm:flex'>
               <Link
-                  href='/Product'
+                  href='/product'
                   className={buttonVariants({
                     variant: 'ghost',
                     size: 'sm',
@@ -45,7 +45,7 @@ const PrivacyPage = () => {
                   Product
                 </Link>
                 <Link
-                  href='/Company'
+                  href='/company'
                   className={buttonVariants({
                     variant: 'ghost',
                     size: 'sm',
@@ -61,7 +61,7 @@ const PrivacyPage = () => {
                   Pricing
                 </Link>
                 <Link
-                  href='/Resources'
+                  href='/resources'
                   className={buttonVariants({
                     variant: 'ghost',
                     size: 'sm',
