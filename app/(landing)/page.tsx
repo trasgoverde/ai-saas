@@ -101,7 +101,7 @@ const LandingPage = () => {
           🎉 Unleash the Power of AI: Revolutionizing Copywriting, SEO, Email Generation, Content Generation, and PDF AI Chat!
           </p>
           <Link
-                href='/sign-up' // Provide the href attribute here
+                href='/company' // Provide the href attribute here
                 className={buttonVariants({
                   size: 'sm',
                   variant: 'secondary',
@@ -124,18 +124,6 @@ const LandingPage = () => {
         <span className='items-center text-lg space-x-8 sm:flex'>
         <Link
           className={buttonVariants({
-            size: "md",
-            className: "mt-5",
-            variant: 'secondary',
-          })}
-          href="/dashboard"
-          target="_blank">
-          Read More! <ArrowRight className="ml-2 h-5 w-5 transition-transform transform hover:translate-x-2" />
-        </Link>
-        
-        
-        <Link
-          className={buttonVariants({
             size: "lg",
             className: "mt-5",
           })}
@@ -143,6 +131,19 @@ const LandingPage = () => {
           target="_blank">
           Start for Free <ArrowRight className="ml-2 h-5 w-5  transition-transform transform hover:translate-x-2" />
         </Link>
+        <Link
+          className={buttonVariants({
+            size: "lg",
+            className: "mt-5",
+            variant: 'secondary',
+          })}
+          href="/product"
+          target="_blank">
+          Read More! <ArrowRight className="ml-2 h-5 w-5 transition-transform transform hover:translate-x-2" />
+        </Link>
+        
+        
+
         </span>
         
       </MaxWidthWrapper>
@@ -530,7 +531,7 @@ To cancel your subscription, kindly follow the outlined steps:
               </AccordionItem>
               <AccordionItem value="item-7">
                 <AccordionTrigger className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">How does Dipassio AI handle sensitive data?</AccordionTrigger>
-                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-aut text-justify">
+                    <AccordionContent className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
                     Dipassio AI upholds strict policies to ensure the privacy and security of user data. This includes industry-standard encryption of all data, strict access control measures, and no sharing or selling of personal information with third parties.
                    </AccordionContent>
               </AccordionItem>
@@ -636,7 +637,7 @@ To cancel your subscription, kindly follow the outlined steps:
       <span>&copy; 2023-2024 Dipassio SL All rights reserved.</span>
     </div>
     <div className="flex items-center">
-      <span className="text-white">Crafted with love ❤️ in 2023 by</span>
+      <span className="text-white">Crafted with ❤️ in 2023 by</span>
       <p href="https://dipass.io" aria-label="Dipass.io Link">
         <Image
           src="rhinologo best.svg"
