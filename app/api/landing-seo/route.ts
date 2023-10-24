@@ -29,14 +29,22 @@ export async function POST(req: Request) {
       return new NextResponse("Messages are required", { status: 400 });
     }
 
+    // Construct the contentPrompt
+    //const contentPrompt = messages.join("\n");
+
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages,
     });
 
-    return NextResponse.json(response.choices[0].message);
+    // Use the response from OpenAI to generate the landing page content
+    //const landingPageContent = response.choices[0].message.content;
+
+    // Handle the landing page content as needed
+
+    return NextResponse.json(response.choices[0].message );
   } catch (error) {
-    console.log('[BLOGSEOARTICLE_ERROR]', error);
+    console.log('[LANDINGSEO_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

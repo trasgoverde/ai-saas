@@ -21,33 +21,47 @@ import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { formSchema } from "./constants";
 
-const BlogSeoPage = () => {
+const LandingSeoPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
+  const [selectedTone, setSelectedTone] = useState("friendly"); // Default tone
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      product: "",
+      benefit1: "",
+      benefit2: "",
+      benefit3: "",
       prompt: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  // Your prompt for generating content
-  const contentPrompt =
-    "I want you to act as a Content writer very proficient SEO that speaks and writes fluently English*. Write an SEO-optimized Long Form article with a minimum of 2000 words. Please use a minimum of 10 headings and sub headings, included H1 heading, H2 headings, and H3, H4. The final paragraph should be a conclusion. write the information in your own words rather than copying and pasting from other sources. also double-check for plagiarism because I need pure unique content, write the content in a conversational style as if it were written by a human. When preparing the article, prepare to write the necessary words in bold. I want you to write content so that it can outrank other websites. Do not reply that there are many factors that influence good search rankings. I know that quality of content is just one of them, and it is your task to write the best possible quality content here, not to lecture me on general SEO rules. I give you the Title 'make money online' of an article that we need to outrank in Google. Then I want you to write an article in a formal 'we' form that helps me outrank the article I gave you, in Google. Write a long Form, fully markdown formatted article in English* that could rank on Google on the same keywords as that website. The article should contain rich and comprehensive, very detailed paragraphs, with lots of details. Do not echo my prompt. Let the article be a long Form article of a minimum of 2000 words. Do not remind me what I asked you for. Do not apologize. Do not self-reference. Do not use generic filler phrases. Do use useful subheadings with keyword-rich titles. Get to the point precisely and accurately. Make headings bold and appropriate for h tags."; // Insert your entire prompt here
+  const tones = {
+    friendly: "friendly tone",
+    luxury: "luxury tone",
+    relaxed: "relaxed tone",
+    professional: "professional tone",
+    bold: "bold tone",
+    adventurous: "adventurous tone",
+    witty: "witty tone",
+    persuasive: "persuasive tone",
+    empathetic: "empathetic tone",
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.prompt };
+      const { product, benefit1, benefit2, benefit3, prompt } = values;
+      const contentPrompt = `Write a landing page headline for ${product} with the following benefits: ${benefit1}, ${benefit2}, ${benefit3}. Use a ${tones[selectedTone]}.\n${prompt}`;
+
+      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: contentPrompt };
       const newMessages = [...messages, userMessage];
 
-      // Send a request to OpenAI to generate content
-      const response = await axios.post("/api/blog-seo-article", { messages: newMessages, prompt: contentPrompt });
+      const response = await axios.post("/api/landing-seo", { messages: newMessages, prompt: contentPrompt });
 
-      // Append the generated content to the messages
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -62,11 +76,15 @@ const BlogSeoPage = () => {
     }
   };
 
+  const handleToneChange = (tone) => {
+    setSelectedTone(tone);
+  };
+
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="Our most advanced conversation model."
+        title="Landing Page Generator"
+        description="Generate landing page headlines with different tones."
         icon={MessageSquare}
         iconColor="text-violet-500"
         bgColor="bg-violet-500/10"
@@ -89,21 +107,56 @@ const BlogSeoPage = () => {
                 gap-2
               "
             >
-              <FormField
-                name="prompt"
-                render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
-                    <FormControl className="m-0 p-0">
-                      <Input
-                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        disabled={isLoading}
-                        placeholder="Write here the Article specifications needed, Keywords, Products or Services"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+              <FormItem className="col-span-12 lg:col-span-4">
+                <FormControl className="m-0 p-0">
+                  <Input
+                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                    disabled={isLoading}
+                    placeholder="Product/Service"
+                    {...form.register("product")}
+                  />
+                </FormControl>
+              </FormItem>
+              <FormItem className="col-span-12 lg:col-span-4">
+                <FormControl className="m-0 p-0">
+                  <Input
+                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                    disabled={isLoading}
+                    placeholder="Benefit 1"
+                    {...form.register("benefit1")}
+                  />
+                </FormControl>
+              </FormItem>
+              <FormItem className="col-span-12 lg:col-span-4">
+                <FormControl className="m-0 p-0">
+                  <Input
+                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                    disabled={isLoading}
+                    placeholder="Benefit 2"
+                    {...form.register("benefit2")}
+                  />
+                </FormControl>
+              </FormItem>
+              <FormItem className="col-span-12 lg:col-span-4">
+                <FormControl className="m-0 p-0">
+                  <Input
+                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                    disabled={isLoading}
+                    placeholder="Benefit 3"
+                    {...form.register("benefit3")}
+                  />
+                </FormControl>
+              </FormItem>
+              <FormItem className="col-span-12 lg:col-span-6">
+                <FormControl className="m-0 p-0">
+                  <Input
+                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                    disabled={isLoading}
+                    placeholder={`Additional Instructions`}
+                    {...form.register("prompt")}
+                  />
+                </FormControl>
+              </FormItem>
               <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
                 Generate
               </Button>
@@ -111,6 +164,22 @@ const BlogSeoPage = () => {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
+          <div className="bg-white rounded-md p-4">
+            <p className="text-gray-700">Select Tone:</p>
+            <div className="flex items-center space-x-4">
+              {Object.keys(tones).map((tone) => (
+                <Button
+                  key={tone}
+                  onClick={() => handleToneChange(tone)}
+                  className={`text-sm ${
+                    selectedTone === tone ? "bg-violet-500 text-white" : "bg-gray-300 text-gray-600"
+                  }`}
+                >
+                  {tone}
+                </Button>
+              ))}
+            </div>
+          </div>
           {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
               <Loader />
@@ -136,5 +205,4 @@ const BlogSeoPage = () => {
     </div>
   );
 };
-
-export default BlogSeoPage;
+export default LandingSeoPage;
