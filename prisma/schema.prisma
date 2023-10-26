@@ -40,6 +40,7 @@ model Message {
   updatedAt     DateTime @updatedAt
   userId        String?
   fileId        String?
+  MessageId     String?
   User          User?    @relation(fields: [userId], references: [id])
   File          File?    @relation(fields: [fileId], references: [id])
 }

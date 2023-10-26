@@ -45,6 +45,7 @@ const UploadButton = () => {
       </DialogTrigger>
 
       <DialogContent>
+        example content
       </DialogContent>
     </Dialog>
   )
