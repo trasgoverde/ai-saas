@@ -15,16 +15,16 @@ export default function ProjectPage() {
       <div>
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
-          Project Dashboard
+          Email Generation Dashboard
         </h2>
         <h2 className="text-2xl md:text-4xl font-bold text-center">
           Let&apos;s Get Started, !!
         </h2>
         <p className="text-muted-foreground font-light text-sm md:text-lg text-center">
-         Enjoy the Experience - Just Upload your Assets, Logos and Info regarding your Project/s
+         Enjoy the Experience - Just Choose what are your needs, and let AI assist you
         </p>
         <p className="text-muted-foreground font-light text-sm md:text-lg text-center">
-        Collaborate on shared projects, track progress, and manage budgeting from one dashboard. - All in one
+        Manage your emails with AI - All in one
         </p>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4">
