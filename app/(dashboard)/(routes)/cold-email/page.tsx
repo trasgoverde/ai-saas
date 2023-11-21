@@ -38,13 +38,13 @@ const ColdEmailPage = () => {
   const isLoading = form.formState.isSubmitting;
 
   const desiredAction = {
-    assertive: "assertive tone",
-    professional: "professional tone",
-    bold: "bold tone",
-    confident: "confident tone",
-    formal: "formal tone",
-    persuasive: "persuasive tone",
-    empathetic: "empathetic tone",
+    call: "Schedule a Call or Meeting",
+    demo: "Request a Demo",
+    download: "Download a Resource",
+    survey: "Complete a Survey",
+    webinar: "Sign Up for a Webinar",
+    website: "Explore Our Website",
+    colleague: "Refer a Colleague",
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

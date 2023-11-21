@@ -71,7 +71,7 @@ const LandingPage = () => {
                 Resources
               </Link>
               <Link
-                href='/sign-in' // Provide the href attribute here
+                href='/dashboard' // Provide the href attribute here
                 className={buttonVariants({
                   variant: 'ghost',
                   size: 'sm',
@@ -80,7 +80,7 @@ const LandingPage = () => {
               </Link>
 
               <Link
-                href='/sign-up' // Provide the href attribute here
+                href='/dashboard' // Provide the href attribute here
                 className={buttonVariants({
                   size: 'sm',
                 })}>
