@@ -42,7 +42,7 @@
     "eslint-config-next": "13.4.19",
     "gantt-task-react": "^0.3.9",
     "lucide-react": "^0.279.0",
-    "next": "^13.5.6",
+    "next": "^14.1.1",
     "next-themes": "^0.2.1",
     "openai": "^4.12.4",
     "postcss": "8.4.29",
