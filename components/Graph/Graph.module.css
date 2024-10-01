@@ -1,0 +1,33 @@
+.nodeLabel {
+  /* font-weight: 700; */
+  position: absolute;
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  color: #131416;
+  z-index: 0;
+  width: fit-content;
+  max-width: 200px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nodeLabelDark {
+  position: absolute;
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  color: #c4c0c0;
+  z-index: 0;
+  width: fit-content;
+  max-width: 200px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.graph {
+  position: absolute;
+  z-index: 0;
+  top: 65px;
+  height: 100%;
+}

@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 import { pools } from "@/constants";
-import UploadButton from '@/components/uploadbutton'; // Updated the import statement
+import UploadButton from '@/components/UploadButton'; // Updated the import statement
 
 export default function PdfPage() {
   const router = useRouter();
