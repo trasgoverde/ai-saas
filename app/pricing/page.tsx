@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/accordion";
 import Logo from 'components/icons/Logo';
 import GitHub from 'components/icons/GitHub';
+import Footer from '@/components/Footer';
 
-const TermsPage = () => {
+const PricingPage = () => {
     return (
       <>
         <div className='sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
@@ -228,4 +229,4 @@ const TermsPage = () => {
   );
 };
 
-export default TermsPage;
+export default PricingPage;

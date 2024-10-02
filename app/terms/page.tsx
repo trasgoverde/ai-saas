@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/accordion";
 import Logo from 'components/icons/Logo';
 import GitHub from 'components/icons/GitHub';
+import Footer from '@/components/Footer';
 
 const TermsPage = () => {
     return (
@@ -271,6 +272,7 @@ const TermsPage = () => {
 </div>
 
       </section>
+      <Footer />
     </>
   );
 };

@@ -3,10 +3,10 @@ import Link from "next/link";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { Navbar } from '@/components/Navbar';
+import { Navbar } from '@/components/navbar'; // Corrected import path
 import { UserButton } from "@clerk/nextjs";
-import MobileNav from '@/components/MobileNav';
-import Newsletter from '@/components/newsletter';
+import MobileNav from '@/components/MobileNav'; // Ensure MobileNav receives the required prop
+import Newsletter from '@/components/newsletter'; // Ensure Newsletter has a default export
 import { Input } from "@/components/ui/input";
 import {
   Accordion,
@@ -17,6 +17,7 @@ import {
 import TypewriterComponent from "typewriter-effect";
 import Logo from '@/components/icons/Logo';
 import GitHub from '@/components/icons/GitHub';
+import Footer from '@/components/Footer'; // Import the Footer component
 
 
 const LandingPage = () => {
@@ -35,7 +36,7 @@ const LandingPage = () => {
               <span>Dipassio | AI Assistant</span>
             </Link>
 
-            <MobileNav />
+            <MobileNav isAuth={true} /> {/* Pass the required prop */}
 
             <div className='hidden items-center text-lg space-x-8 sm:flex'>
             <Link
@@ -546,102 +547,7 @@ To cancel your subscription, kindly follow the outlined steps:
             </div>
             </div>
        </section>     
-       <footer className="mx-auto max-w-[1920px] bg-zinc-700 px-6 text-white transition-colors duration-150">
-  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-zinc-600 py-12 text-white transition-colors duration-150 bg-zinc-700">
-    <div className="col-span-1 lg:col-span-2">
-      <Link href="/">
-        <p className="flex flex-initial items-center font-bold md:mr-24">
-          <span className="rounded-full border border-zinc-200 mr-2">
-            <Logo />
-          </span>
-          <span>DIPASSIO</span>
-        </p>
-      </Link>
-    </div>
-    <div className="col-span-1 lg:col-span-2">
-      <ul className="flex flex-initial flex-col md:flex-1">
-        <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/">
-            <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-              Home
-            </p>
-          </Link>
-        </li>
-        <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/about-us">
-            <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-              About
-            </p>
-          </Link>
-        </li>
-        <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/">
-            <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-              Careers
-            </p>
-          </Link>
-        </li>
-        <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/">
-            <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-              Blog
-            </p>
-          </Link>
-        </li>
-      </ul>
-    </div>
-    <div className="col-span-1 lg:col-span-2">
-      <ul className="flex flex-initial flex-col md:flex-1">
-        <li className="py-3 md:py-0 md:pb-4">
-          <p className="text-white font-bold hover:text-zinc-200 transition ease-in-out duration-150">
-            LEGAL
-          </p>
-        </li>
-        <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/privacy">
-            <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-              Privacy Policy
-            </p>
-          </Link>
-        </li>
-        <li className="py-3 md:py-0 md:pb-4">
-          <Link href="/terms">
-            <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-              Terms of Use
-            </p>
-          </Link>
-        </li>
-      </ul>
-    </div>
-    <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-gray-500">
-      <div className="flex space-x-6 items-center h-10">
-        <p
-          aria-label="Github Repository"
-          href="https://github.com/vercel/nextjs-subscription-payments"
-        >
-          <GitHub />
-        </p>
-      </div>
-    </div>
-  </div>
-  <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-zinc-700">
-    <div>
-      <span>&copy; 2023-2024 Dipassio SL All rights reserved.</span>
-    </div>
-    <div className="flex items-center">
-      <span className="text-white">Crafted with ❤️ in 2023 by</span>
-      <p href="https://dipass.io" aria-label="Dipass.io Link">
-        <Image
-          src="rhinologo best.svg"
-          height="32"
-          width="32"
-          alt="Dipass.io Logo"
-          className="inline-block h-6 ml-4 text-white"
-        />
-      </p>
-    </div>
-  </div>
-</footer>
+       <Footer /> {/* Replaced footer section with Footer component */}
        
         </div>
 
@@ -650,4 +556,3 @@ To cancel your subscription, kindly follow the outlined steps:
 };
 
 export default LandingPage;
-
