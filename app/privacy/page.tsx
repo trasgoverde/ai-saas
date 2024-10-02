@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/accordion";
 import Logo from 'components/icons/Logo';
 import GitHub from 'components/icons/GitHub';
+import Footer from '@/components/Footer';
 
 const PrivacyPage = () => {
     return (
@@ -92,12 +93,12 @@ const PrivacyPage = () => {
           </MaxWidthWrapper>
         </div>
   
-        <section className="mb-20 mt-20 sm:mt-30 flex flex-col items-center justify-center text-center">
+      <section className="mb-20 mt-20 sm:mt-30 flex flex-col items-center justify-center text-center">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 items-center">
             <div className="flex flex-col justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r text-blue-600">
                   Privacy Policy
                 </h1>
                 <div className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto text-justify">
@@ -216,6 +217,7 @@ hello@dipass.io
         </div>
         
       </section>
+      <Footer />
     </>
   );
 };

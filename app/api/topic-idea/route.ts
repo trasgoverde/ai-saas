@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(response.choices[0].message);
   } catch (error) {
-    console.log('[BLOGSEOARTICLE_ERROR]', error);
+    console.log('[TOPICIDEA_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
