@@ -5,12 +5,12 @@ import GitHub from './icons/GitHub';
 
 const Footer = () => {
   return (
-    <footer className="mx-auto max-w-[1920px] bg-zinc-700 px-6 text-white transition-colors duration-150">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-zinc-600 py-12 text-white transition-colors duration-150 bg-zinc-700">
+    <footer className="mx-auto max-w-[1920px] bg-blue-700 px-6 text-white transition-colors duration-150">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-blue-600 py-12 text-white transition-colors duration-150 bg-blue-700">
         <div className="col-span-1 lg:col-span-2">
           <Link href="/">
             <p className="flex flex-initial items-center font-bold md:mr-24">
-              <span className="rounded-full border border-zinc-200 mr-2">
+              <span className="rounded-full border border-blue-200 mr-2">
                 <Logo />
               </span>
               <span>DIPASSIO</span>
@@ -76,14 +76,14 @@ const Footer = () => {
           <div className="flex space-x-6 items-center h-10">
             <a
               aria-label="Github Repository"
-              href="https://github.com/vercel/nextjs-subscription-payments"
+              href="https://github.com/dipass-io"
             >
               <GitHub />
             </a>
           </div>
         </div>
       </div>
-      <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-zinc-700">
+      <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-blue-700">
         <div>
           <span>&copy; 2023-2024 Dipassio SL All rights reserved.</span>
         </div>

@@ -263,7 +263,7 @@ const LandingPage = () => {
       <div className="flex flex-col justify-center space-y-8 text-center" >
         <div className="space-y-2" >
           <h1
-            className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700"
+            className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600"
           >
                             Discover Our Unique Features
           </h1>
@@ -293,7 +293,7 @@ const LandingPage = () => {
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700" >
+              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600" >
                 Smart Inbox
               </h2>
               <p className="text-zinc-600 dark:text-zinc-700" >
@@ -319,7 +319,7 @@ const LandingPage = () => {
                   <path d="m20 22-5-5" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700" >
+              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600" >
                 Seamless Integration
               </h2>
               <p className="text-zinc-600 dark:text-zinc-700" >
@@ -346,7 +346,7 @@ const LandingPage = () => {
                   <circle cx="12" cy="12" r="3" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700" >
+              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600" >
                 Advanced Customization
               </h2>
               <p className="text-zinc-600 dark:text-zinc-700" >
@@ -371,7 +371,7 @@ const LandingPage = () => {
                   <path d="m21 21-4.3-4.3" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700" >
+              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600" >
                 Powerful Search
               </h2>
               <p className="text-zinc-600 dark:text-zinc-700" >
@@ -396,7 +396,7 @@ const LandingPage = () => {
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700" >
+              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600" >
                 Reliable Security
               </h2>
               <p className="text-zinc-600 dark:text-zinc-700" >
@@ -422,7 +422,7 @@ const LandingPage = () => {
                   <path d="m20 22-5-5" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700" >
+              <h2 className="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600" >
                 Easy Collaboration
               </h2>
               <p className="text-zinc-600 dark:text-zinc-700" >
@@ -441,7 +441,7 @@ const LandingPage = () => {
         <div className="grid gap-6 items-center">
           <div className="flex flex-col justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600">
                 Revolutionize Your Develop Experience
               </h1>
               <p className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
@@ -475,7 +475,7 @@ const LandingPage = () => {
         <div className="grid gap-6 items-center">
           <div className="flex flex-col justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-700">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600">
             Frecuent Asked Questions  | FAQ
             </h1>
             <Accordion type="single" collapsible>
