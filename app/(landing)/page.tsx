@@ -63,14 +63,6 @@ const LandingPage = () => {
                 Pricing
               </Link>
               <Link
-                href='/resources'
-                className={buttonVariants({
-                  variant: 'ghost',
-                  size: 'sm',
-                })}>
-                Resources
-              </Link>
-              <Link
                 href='/dashboard' // Provide the href attribute here
                 className={buttonVariants({
                   variant: 'ghost',

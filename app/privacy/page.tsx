@@ -61,14 +61,7 @@ const PrivacyPage = () => {
                   })}>
                   Pricing
                 </Link>
-                <Link
-                  href='/resources'
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    size: 'sm',
-                  })}>
-                  Resources
-                </Link>
+
                 <Link
                   href='/sign-in' // Provide the href attribute here
                   className={buttonVariants({
