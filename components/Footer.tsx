@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="col-span-1 lg:col-span-2">
           <Link href="/">
             <p className="flex flex-initial items-center font-bold md:mr-24">
-              <span className="rounded-full border border-blue-200 mr-2">
+              <span className="border-blue-200 mr-2">
                 <Logo />
               </span>
               <span>DIPASSIO</span>
@@ -30,13 +30,6 @@ const Footer = () => {
               <Link href="/about-us">
                 <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
                   About
-                </p>
-              </Link>
-            </li>
-            <li className="py-3 md:py-0 md:pb-4">
-              <Link href="/">
-                <p className="text-white hover:text-zinc-200 transition ease-in-out duration-150">
-                  Careers
                 </p>
               </Link>
             </li>
@@ -72,7 +65,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-gray-500">
+        <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-black">
           <div className="flex space-x-6 items-center h-10">
             <a
               aria-label="Github Repository"
@@ -85,10 +78,10 @@ const Footer = () => {
       </div>
       <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-blue-700">
         <div>
-          <span>&copy; 2023-2024 Dipassio SL All rights reserved.</span>
+          <span>&copy; 2024-2025 Dipassio SL All rights reserved.</span>
         </div>
         <div className="flex items-center">
-          <span className="text-white">Crafted with ❤️ in 2023 by</span>
+          <span className="text-white">Crafted with ❤️ in 2024 by</span>
           <a href="https://dipass.io" aria-label="Dipass.io Link">
             <Image
               src="/rhinologo best.svg"
