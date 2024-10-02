@@ -441,7 +441,7 @@ const LandingPage = () => {
         <div className="grid gap-6 items-center">
           <div className="flex flex-col justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-500">
                 Revolutionize Your Develop Experience
               </h1>
               <p className="max-w-[600px] text-zinc-800 md:text-xl dark:text-zinc-100 mx-auto">
@@ -475,7 +475,7 @@ const LandingPage = () => {
         <div className="grid gap-6 items-center">
           <div className="flex flex-col justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-600">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-gray-500 to-gray-500">
             Frecuent Asked Questions  | FAQ
             </h1>
             <Accordion type="single" collapsible>

@@ -5,8 +5,8 @@ import GitHub from './icons/GitHub';
 
 const Footer = () => {
   return (
-    <footer className="mx-auto max-w-[1920px] bg-blue-700 px-6 text-white transition-colors duration-150">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-blue-600 py-12 text-white transition-colors duration-150 bg-blue-700">
+    <footer className="mx-auto max-w-[1920px] bg-blue-500 px-6 text-white transition-colors duration-150">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-blue-600 py-12 text-white transition-colors duration-150 bg-blue-500">
         <div className="col-span-1 lg:col-span-2">
           <Link href="/">
             <p className="flex flex-initial items-center font-bold md:mr-24">
@@ -76,7 +76,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-blue-700">
+      <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-blue-500">
         <div>
           <span>&copy; 2024-2025 Dipassio SL All rights reserved.</span>
         </div>

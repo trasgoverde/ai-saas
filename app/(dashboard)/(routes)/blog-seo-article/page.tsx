@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import OpenAI from "openai"; // Assuming you have OpenAI's ChatCompletionRequestMessage
 
-import { BotAvatar } from "@/components/bot-avatar";
+import { BotAvatar } from "@/components/bot-avatar"; // Ensure consistent casing
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,13 @@ import { Loader } from "@/components/loader"; // Import the Loader component
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { formSchema } from "./constants";
+import { z } from "zod"; // Import Zod
+
+// Define your form schema using Zod
+const formSchema = z.object({
+  prompt: z.string().nonempty("Prompt is required"),
+  // Add other fields as needed
+});
 
 const BlogSeoPage = () => {
   const router = useRouter();
@@ -51,14 +57,29 @@ const BlogSeoPage = () => {
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
+        if (error.response.status === 403) {
         proModal.onOpen();
       } else {
         toast.error("Something went wrong.");
       }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+
     } finally {
       router.refresh();
+    }
+  };
+
+  const renderMessageContent = (content: any) => {
+    if (typeof content === "string") {
+      return content;
+    } else if (Array.isArray(content)) {
+      return content.map((part, i) => <span key={i}>{part.text}</span>); // Assuming part has a text property
+    } else {
+      return null;
     }
   };
 
@@ -118,16 +139,18 @@ const BlogSeoPage = () => {
           )}
           {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <div
-                key={message.content}
+                key={`${message.role}-${index}`} // Use a combination of role and index for a unique key
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">{message.content}</p>
+                <p className="text-sm">
+                  {renderMessageContent(message.content)}
+                </p>
               </div>
             ))}
           </div>

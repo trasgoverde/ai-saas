@@ -1,8 +1,8 @@
-import { publicProdecure, router } from './trpc';
+import { publicProcedure, router } from './trpc';
 import { clerkClient } from "@clerk/nextjs";
  
 export const appRouter = router({
-  authCallback: publicProdecure.query(() => {
+  authCallback: publicProcedure.query(async() => {
     const {getUser} = clerkClient.users.getUser(userId);
     const user = getUser()
 
@@ -26,6 +26,9 @@ export const appRouter = router({
   })
   })
  
+// Ensure the correct export name
+export const publicProcedure = /* your implementation */;
+
 // Export type router type signature,
 // NOT the router itself.
 export type AppRouter = typeof appRouter;

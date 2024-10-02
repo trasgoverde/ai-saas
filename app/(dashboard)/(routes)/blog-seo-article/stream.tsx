@@ -3,7 +3,7 @@ import OpenAI from "openai"; // Import the OpenAI library
 
 // Define the OpenAI API key
 const openai = new OpenAI({
-  key: process.env.OPENAI_API_KEY, // Replace with your actual API key
+  apiKey: process.env.OPENAI_API_KEY, // Use the correct property name
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -14,12 +14,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const streamOpenAIResponse = async () => {
       try {
         // Initialize a conversation with the provided messages
-        const conversation = await openai.chat.create({
+        const responseStream = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo", // Specify the model
           messages,
+          stream: true,
         });
-
-        // Start the chat conversation
-        const responseStream = openai.chat.stream(conversation.id);
 
         // Set the Content-Type to text/event-stream for Server-Sent Events (SSE)
         res.setHeader("Content-Type", "text/event-stream");
@@ -27,22 +26,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.setHeader("Connection", "keep-alive");
 
         // Stream responses to the client
-        responseStream.on("data", (data) => {
+        for await (const chunk of responseStream) {
           // Send each response to the client as an SSE message
-          res.write(`data: ${JSON.stringify(data)}\n\n`);
-        });
+          res.write(`data: ${JSON.stringify(chunk)}\n\n`);
+        }
 
-        // Handle errors, if any
-        responseStream.on("error", (error) => {
-          console.error("Error with API request:", error);
-          responseStream.cancel();
-          res.end();
-        });
-
-        // Close the stream when done
-        responseStream.on("end", () => {
-          res.end();
-        });
+        // End the response
+        res.end();
       } catch (error) {
         console.error("Error with API request:", error);
         res.status(500).json({ error: "Something went wrong." });

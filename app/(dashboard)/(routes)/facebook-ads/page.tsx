@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import OpenAI from "openai"; // Assuming you have OpenAI's ChatCompletionRequestMessage
 
-import { BotAvatar } from "@/components/bot-avatar";
+import { BotAvatar } from "@/components/bot-avatar"; // Ensure consistent casing
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,9 +19,15 @@ import { Loader } from "@/components/loader"; // Import the Loader component
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { formSchema } from "./constants";
+import { z } from "zod"; // Import Zod
 
-const BlogSeoPage = () => {
+// Define your form schema using Zod
+const formSchema = z.object({
+  adDetails: z.string().nonempty("Ad details are required"),
+  // Add other fields as needed
+});
+
+const FacebookAdsPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
@@ -29,7 +35,7 @@ const BlogSeoPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prompt: "",
+      adDetails: "",
     },
   });
 
@@ -41,24 +47,39 @@ const BlogSeoPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.prompt };
+      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.adDetails };
       const newMessages = [...messages, userMessage];
 
       // Send a request to OpenAI to generate content
-      const response = await axios.post("/api/blog-seo-article", { messages: newMessages, prompt: contentPrompt });
+      const response = await axios.post("/api/facebook-ads", { messages: newMessages, prompt: contentPrompt });
 
       // Append the generated content to the messages
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
+        if (error.response.status === 403) {
         proModal.onOpen();
       } else {
         toast.error("Something went wrong.");
       }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+
     } finally {
       router.refresh();
+    }
+  };
+
+  const renderMessageContent = (content: any) => {
+    if (typeof content === "string") {
+      return content;
+    } else if (Array.isArray(content)) {
+      return content.map((part, i) => <span key={i}>{part.text}</span>); // Assuming part has a text property
+    } else {
+      return null;
     }
   };
 
@@ -90,14 +111,14 @@ const BlogSeoPage = () => {
               "
             >
               <FormField
-                name="prompt"
+                name="adDetails"
                 render={({ field }) => (
                   <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Write here the Article specifications needed, Keywords, Products or Services"
+                        placeholder="Write here the Ad details"
                         {...field}
                       />
                     </FormControl>
@@ -118,16 +139,18 @@ const BlogSeoPage = () => {
           )}
           {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <div
-                key={message.content}
+                key={`${message.role}-${index}`} // Use a combination of role and index for a unique key
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">{message.content}</p>
+                <p className="text-sm">
+                  {renderMessageContent(message.content)}
+                </p>
               </div>
             ))}
           </div>
@@ -137,4 +160,4 @@ const BlogSeoPage = () => {
   );
 };
 
-export default BlogSeoPage;
+export default FacebookAdsPage;

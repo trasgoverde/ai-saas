@@ -20,6 +20,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { formSchema } from "./constants";
+import { z } from "zod";
 
 const BlogSeoPage = () => {
   const router = useRouter();
@@ -51,12 +52,17 @@ const BlogSeoPage = () => {
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
+        if (error.response.status === 403) {
         proModal.onOpen();
       } else {
         toast.error("Something went wrong.");
       }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+
     } finally {
       router.refresh();
     }

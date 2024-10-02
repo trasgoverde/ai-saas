@@ -19,16 +19,18 @@ import { Loader } from "@/components/loader"; // Import the Loader component
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { formSchema } from "./constants";
+import { formSchema as importedFormSchema } from "./constants"; 
+import { z } from "zod";
 
 const ColdEmailPage = () => {
   const router = useRouter(); // Corrected import
   const proModal = useProModal();
-  const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
   const [selectedDesiredAction, setSelectedDesiredAction] = useState("assertive"); // Corrected spelling
+  const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+
+  const form = useForm<z.infer<typeof importedFormSchema>>({
+    resolver: zodResolver(importedFormSchema),
     defaultValues: {
       CustomerPersona: "",
       prompt: "",
@@ -47,7 +49,7 @@ const ColdEmailPage = () => {
     colleague: "Refer a Colleague",
   };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof importedFormSchema>) => {
     try {
       const { product, prompt } = values;
       const contentPrompt = `Write a cold email that will draw in my ${values.CustomerPersona} with a relatable and authentic message, and then persuade them to take ${selectedDesiredAction} with a strong call-to-action and compelling visuals.\n${prompt}`;
@@ -55,23 +57,28 @@ const ColdEmailPage = () => {
       const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: contentPrompt };
       const newMessages = [...messages, userMessage];
 
-      const response = await axios.post("/api/cold-email", { messages: newMessages, prompt: contentPrompt });
+      const response = await axios.post("/api/cold-email", { messages: newMessages, prompt: contentPrompt, desiredAction: selectedDesiredAction });
 
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
+        if (error.response.status === 403) {
         proModal.onOpen();
       } else {
         toast.error("Something went wrong.");
       }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+
     } finally {
-      router.reload(); // Corrected function name
+      router.refresh();
     }
   };
 
-  const handleDesiredActionChange = (desiredAction) => {
+  const handleDesiredActionChange = (desiredAction: keyof typeof desiredAction) => {
     setSelectedDesiredAction(desiredAction);
   };
 

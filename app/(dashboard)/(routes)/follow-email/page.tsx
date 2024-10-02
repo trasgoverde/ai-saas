@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import OpenAI from "openai"; // Assuming you have OpenAI's ChatCompletionRequestMessage
 
-import { BotAvatar } from "@/components/bot-avatar";
+import { BotAvatar } from "@/components/bot-avatar"; // Ensure consistent casing
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { formSchema } from "./constants";
+import { z } from "zod";
 
 const BlogSeoPage = () => {
   const router = useRouter();
@@ -51,12 +52,17 @@ const BlogSeoPage = () => {
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
+        if (error.response.status === 403) {
         proModal.onOpen();
       } else {
         toast.error("Something went wrong.");
       }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+
     } finally {
       router.refresh();
     }
@@ -118,16 +124,16 @@ const BlogSeoPage = () => {
           )}
           {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <div
-                key={message.content}
+                key={index}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">{message.content}</p>
+                <p className="text-sm">{index}</p>
               </div>
             ))}
           </div>
