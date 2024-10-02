@@ -6,80 +6,87 @@ import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import OpenAI from "openai"; // Assuming you have OpenAI's ChatCompletionRequestMessage
 
 import { BotAvatar } from "@/components/bot-avatar";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { Loader } from "@/components/loader"; // Import the Loader component
+import { Loader } from "@/components/loader";
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { formSchema as importedFormSchema } from "./constants"; 
 import { z } from "zod";
 
+const formSchema = z.object({
+  product: z.string().min(1, "Product is required"),
+  customerPersona: z.string().min(1, "Customer Persona is required"),
+  prompt: z.string().optional(),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+type Message = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
+const desiredActions = {
+  call: "Schedule a Call or Meeting",
+  demo: "Request a Demo",
+  download: "Download a Resource",
+  survey: "Complete a Survey",
+  webinar: "Sign Up for a Webinar",
+  website: "Explore Our Website",
+  colleague: "Refer a Colleague",
+};
+
 const ColdEmailPage = () => {
-  const router = useRouter(); // Corrected import
+  const router = useRouter();
   const proModal = useProModal();
-  const [selectedDesiredAction, setSelectedDesiredAction] = useState("assertive"); // Corrected spelling
-  const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
+  const [selectedDesiredAction, setSelectedDesiredAction] = useState<keyof typeof desiredActions>("call");
+  const [messages, setMessages] = useState<Message[]>([]);
 
-
-  const form = useForm<z.infer<typeof importedFormSchema>>({
-    resolver: zodResolver(importedFormSchema),
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      CustomerPersona: "",
+      product: "",
+      customerPersona: "",
       prompt: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const desiredAction = {
-    call: "Schedule a Call or Meeting",
-    demo: "Request a Demo",
-    download: "Download a Resource",
-    survey: "Complete a Survey",
-    webinar: "Sign Up for a Webinar",
-    website: "Explore Our Website",
-    colleague: "Refer a Colleague",
-  };
-
-  const onSubmit = async (values: z.infer<typeof importedFormSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     try {
-      const { product, prompt } = values;
-      const contentPrompt = `Write a cold email that will draw in my ${values.CustomerPersona} with a relatable and authentic message, and then persuade them to take ${selectedDesiredAction} with a strong call-to-action and compelling visuals.\n${prompt}`;
+      const { product, customerPersona, prompt } = values;
+      const contentPrompt = `Write a cold email that will draw in my ${customerPersona} with a relatable and authentic message, and then persuade them to ${desiredActions[selectedDesiredAction]} with a strong call-to-action and compelling visuals.\n${prompt}`;
      
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: contentPrompt };
+      const userMessage: Message = { role: "user", content: contentPrompt };
       const newMessages = [...messages, userMessage];
 
-      const response = await axios.post("/api/cold-email", { messages: newMessages, prompt: contentPrompt, desiredAction: selectedDesiredAction });
+      const response = await axios.post("/api/cold-email", { 
+        messages: newMessages, 
+        prompt: contentPrompt, 
+        desiredAction: desiredActions[selectedDesiredAction],
+        product
+      });
 
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error: unknown) {
-      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
-        if (error.response.status === 403) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
         proModal.onOpen();
       } else {
-        toast.error("Something went wrong.");
+        toast.error("An unexpected error occurred.");
       }
-    } else {
-      toast.error("An unexpected error occurred.");
-    }
-
     } finally {
       router.refresh();
     }
-  };
-
-  const handleDesiredActionChange = (desiredAction: keyof typeof desiredAction) => {
-    setSelectedDesiredAction(desiredAction);
   };
 
   return (
@@ -96,50 +103,56 @@ const ColdEmailPage = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="
-                rounded-lg
-                border
-                w-full
-                p-4
-                px-3
-                md:px-6
-                focus-within:shadow-sm
-                grid
-                grid-cols-12
-                gap-2
-              "
+              className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2"
             >
-              <FormItem className="col-span-12 lg:col-span-4">
-                <FormControl className="m-0 p-0">
-                  <Input
-                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                    disabled={isLoading}
-                    placeholder="Product/Service"
-                    {...form.register("product")}
-                  />
-                </FormControl>
-              </FormItem>
-              <FormItem className="col-span-12 lg:col-span-4">
-                <FormControl className="m-0 p-0">
-                  <Input
-                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                    disabled={isLoading}
-                    placeholder="Customer Persona"
-                    {...form.register("CustomerPersona")}
-                  />
-                </FormControl>
-              </FormItem>
-             
-              <FormItem className="col-span-12 lg:col-span-6">
-                <FormControl className="m-0 p-0">
-                  <Input
-                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                    disabled={isLoading}
-                    placeholder={`Additional Instructions`}
-                    {...form.register("prompt")}
-                  />
-                </FormControl>
-              </FormItem>
+              <FormField
+                name="product"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-4">
+                    <FormLabel>Product/Service</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Product/Service"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="customerPersona"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-4">
+                    <FormLabel>Customer Persona</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Customer Persona"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="prompt"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-6">
+                    <FormLabel>Additional Instructions</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Additional Instructions"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
                 Generate
               </Button>
@@ -149,16 +162,16 @@ const ColdEmailPage = () => {
         <div className="space-y-4 mt-4">
           <div className="bg-white rounded-md p-4">
             <p className="text-gray-700">Select desired action:</p>
-            <div className="flex items-center space-x-4">
-              {Object.keys(desiredAction).map((action) => (
+            <div className="flex flex-wrap items-center gap-2">
+              {(Object.keys(desiredActions) as Array<keyof typeof desiredActions>).map((action) => (
                 <Button
                   key={action}
-                  onClick={() => handleDesiredActionChange(action)}
+                  onClick={() => setSelectedDesiredAction(action)}
                   className={`text-sm ${
                     selectedDesiredAction === action ? "bg-violet-500 text-white" : "bg-gray-300 text-gray-600"
                   }`}
                 >
-                  {desiredAction[action]}
+                  {desiredActions[action]}
                 </Button>
               ))}
             </div>
@@ -170,9 +183,9 @@ const ColdEmailPage = () => {
           )}
           {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <div
-                key={message.content}
+                key={index}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
