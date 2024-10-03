@@ -140,7 +140,7 @@ const BlogSeoPage = () => {
           )}
           {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
           <div className="flex flex-col-reverse gap-y-4">
-           {messages.map((message, index) => (
+            {messages.map((message, index) => (
               <div
                 key={index}
                 className={cn(
@@ -149,9 +149,7 @@ const BlogSeoPage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">
-                  {renderMessageContent(message.content)}
-                </p>
+                <p className="text-sm">{renderMessageContent(message.content)}</p>
               </div>
             ))}
           </div>

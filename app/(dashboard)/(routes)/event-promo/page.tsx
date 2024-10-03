@@ -1,81 +1,115 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import axios from "axios";
-import { MessageSquare } from "lucide-react";
+import { FileText } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import OpenAI from "openai"; // Assuming you have OpenAI's ChatCompletionRequestMessage
 
-import { BotAvatar } from "@/components/bot-avatar"; // Ensure consistent casing
+import { BotAvatar } from "@/components/bot-avatar";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { Loader } from "@/components/loader"; // Import the Loader component
+import { Loader } from "@/components/loader";
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { z } from "zod"; // Import Zod
+import { z } from "zod";
+import { BLOG_SEO_ARTICLE_ROUTE } from '@/app/api/routes';
 
-// Define your form schema using Zod
 const formSchema = z.object({
-  eventDetails: z.string().nonempty("Event details are required"),
-  // Add other fields as needed
+  topic: z.string().min(1, "Topic is required"),
+  audience: z.string().min(1, "Audience is required"),
+  product: z.string().optional(),
+  customerPersona: z.string().optional(),
+  prompt: z.string().optional(),
 });
 
-const EventPromoPage = () => {
+type FormValues = z.infer<typeof formSchema>;
+
+type Message = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
+const desiredActions = {
+  call: "Schedule a Call",
+  demo: "Request a Demo",
+  download: "Download a Resource",
+  survey: "Complete a Survey",
+  webinar: "Sign Up for a Webinar",
+  website: "Explore Our Website",
+  colleague: "Refer a Colleague",
+};
+
+const BlogSeoPage = () => {
   const router = useRouter();
   const proModal = useProModal();
-  const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
+  const [selectedDesiredAction, setSelectedDesiredAction] = useState<keyof typeof desiredActions>("call");
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      eventDetails: "",
+      topic: "",
+      audience: "",
+      product: "",
+      customerPersona: "",
+      prompt: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     try {
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.eventDetails };
+      const { topic, audience, product, customerPersona, prompt } = values;
+      const contentPrompt = `I want you to act as a Content writer very proficient SEO that speaks and writes fluently English*. Write a blog SEO-friendly article about ${topic} for my ${audience}. ${product ? `Product: ${product}. ` : ""}${customerPersona ? `Target audience: ${customerPersona}. ` : ""}Write an SEO-optimized Long Form article with a minimum of 2000 words. Please use a minimum of 10 headings and sub headings, included H1 heading, H2 headings, and H3, H4. The final paragraph should be a conclusion. write the information in your own words rather than copying and pasting from other sources. also double-check for plagiarism because I need pure unique content, write the content in a conversational style as if it were written by a human. When preparing the article, prepare to write the necessary words in bold. I want you to write content so that it can outrank other websites. Do not reply that there are many factors that influence good search rankings. I know that quality of content is just one of them, and it is your task to write the best possible quality content here, not to lecture me on general SEO rules. I give you the Title 'make money online' of an article that we need to outrank in Google. Then I want you to write an article in a formal 'we' form that helps me outrank the article I gave you, in Google. Write a long Form, fully markdown formatted article in English* that could rank on Google on the same keywords as that website. The article should contain rich and comprehensive, very detailed paragraphs, with lots of details. Do not echo my prompt. Let the article be a long Form article of a minimum of 2000 words. Do not remind me what I asked you for. Do not apologize. Do not self-reference. Do not use generic filler phrases. Do use useful subheadings with keyword-rich titles. Get to the point precisely and accurately. Make headings bold and appropriate for h tagsUse relevant keywords and include a strong call to action to ${desiredActions[selectedDesiredAction]}. ${prompt || ""}`;
+
+      const userMessage: Message = { role: "user", content: contentPrompt };
       const newMessages = [...messages, userMessage];
 
-      // Send a request to OpenAI to generate content
-      const response = await axios.post("/api/event-promo", { messages: newMessages, prompt: values.eventDetails });
+      const response = await axios.post(BLOG_SEO_ARTICLE_ROUTE, { 
+        messages: newMessages, 
+        topic, 
+        audience, 
+        product, 
+        customerPersona, 
+        desiredAction: selectedDesiredAction,
+        prompt: contentPrompt
+      });
 
-      // Append the generated content to the messages
-      setMessages((current) => [...current, userMessage, response.data]);
+      // Handle the response based on its structure
+      let assistantMessage: Message;
+      if (typeof response.data === 'object' && 'content' in response.data) {
+        assistantMessage = { 
+          role: "assistant", 
+          content: response.data.content 
+        };
+      } else if (typeof response.data === 'string') {
+        assistantMessage = { 
+          role: "assistant", 
+          content: response.data 
+        };
+      } else {
+        throw new Error("Unexpected response format");
+      }
+
+      setMessages((current) => [...current, userMessage, assistantMessage]);
 
       form.reset();
-    } catch (error: unknown) {
-      if (error instanceof Error && 'response' in error && typeof error.response === 'object' && error.response && 'status' in error.response) {
-        if (error.response.status === 403) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
         proModal.onOpen();
+      } else if (axios.isAxiosError(error) && error.response?.status === 400) {
+        toast.error("Invalid request. Please check your inputs.");
       } else {
-        toast.error("Something went wrong.");
+        toast.error("An unexpected error occurred.");
       }
-    } else {
-      toast.error("An unexpected error occurred.");
-    }
-
-    } finally {
-      router.refresh();
-    }
-  };
-
-  const renderMessageContent = (content: any) => {
-    if (typeof content === "string") {
-      return content;
-    } else if (Array.isArray(content)) {
-      return content.map((part, i) => <span key={i}>{part.text}</span>); // Assuming part has a text property
-    } else {
-      return null;
     }
   };
 
@@ -83,70 +117,155 @@ const EventPromoPage = () => {
     <div>
       <Heading
         title="Event Promo Generator"
-        description="Generate event promotion content."
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        description="Generate Event Promos with compelling CTAs."
+        icon={FileText}
+        iconColor="text-blue-500"
+        bgColor="bg-blue-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="
-                rounded-lg
-                border
-                w-full
-                p-4
-                px-3
-                md:px-6
-                focus-within:shadow-sm
-                grid
-                grid-cols-12
-                gap-2
-              "
+              className="rounded-lg border w-full p-4 px-3 md:px-6 grid grid-cols-12 gap-2"
             >
+              {/* Topic Input */}
               <FormField
-                name="eventDetails"
+                name="topic"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-4">
+                    <FormLabel>Topic</FormLabel>
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Write here the Event details"
+                        placeholder="Blog Topic"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+
+              {/* Audience Input */}
+              <FormField
+                name="audience"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-4">
+                    <FormLabel>Audience</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Target Audience"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Product Input (Optional) */}
+              <FormField
+                name="product"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-4">
+                    <FormLabel>Product (Optional)</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Product/Service"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Customer Persona Input (Optional) */}
+              <FormField
+                name="customerPersona"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-4">
+                    <FormLabel>Customer Persona (Optional)</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Customer Persona"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Additional Instructions */}
+              <FormField
+                name="prompt"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-6">
+                    <FormLabel>Additional Instructions</FormLabel>
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="Extra details (optional)"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Submit Button */}
               <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
-                Generate
+                {isLoading ? <Loader /> : "Generate"}
               </Button>
             </form>
           </Form>
         </div>
+
         <div className="space-y-4 mt-4">
+          <div className="bg-white rounded-md p-4">
+            <p className="text-gray-700">Select desired action:</p>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Desired Action Buttons */}
+              {Object.keys(desiredActions).map((action) => (
+                <Button
+                  key={action}
+                  onClick={() => setSelectedDesiredAction(action as keyof typeof desiredActions)}
+                  className={`text-sm ${
+                    selectedDesiredAction === action ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-600"
+                  }`}
+                >
+                  {desiredActions[action as keyof typeof desiredActions]}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Loading & Messages */}
           {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && <Empty label="No conversation started." />}
+
+          {!isLoading && messages.length === 0 && <Empty label="No conversation started." />}
+
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message, index) => (
               <div
-                key={`${message.role}-${index}`} // Use a combination of role and index for a unique key
+                key={index}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">
-                  {renderMessageContent(message.content)}
-                </p>
+                <p className="text-sm">{message.content}</p>
               </div>
             ))}
           </div>
@@ -156,4 +275,4 @@ const EventPromoPage = () => {
   );
 };
 
-export default EventPromoPage;
+export default BlogSeoPage;

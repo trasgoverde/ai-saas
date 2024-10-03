@@ -8,7 +8,7 @@ const openai = new OpenAI({
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const { messages, prompt } = req.body;
+    const { messages } = req.body;
 
     // Function to stream responses from the OpenAI API
     const streamOpenAIResponse = async () => {

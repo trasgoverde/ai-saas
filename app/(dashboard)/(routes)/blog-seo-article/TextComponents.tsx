@@ -6,14 +6,10 @@ const Heading1: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const isHeading = (text: string): boolean => {
-    // Define your criteria for identifying headings
-    // For example, if headings start with '#', you can use:
     return text.startsWith("# ");
   };
   
   const isTitle = (text: string): boolean => {
-    // Define your criteria for identifying titles
-    // For example, if titles are enclosed in double quotes, you can use:
     return text.startsWith('"') && text.endsWith('"');
   };
 
@@ -23,14 +19,10 @@ const isHeading = (text: string): boolean => {
   
   
   const isSentence = (text: string): boolean => {
-    // Define your criteria for identifying sentences
-    // For example, if a sentence ends with a period, you can use:
     return text.endsWith(".");
   };
   
   const isParagraph = (text: string): boolean => {
-    // Define your criteria for identifying paragraphs
-    // For example, if paragraphs are longer than a certain length, you can use:
     return text.length > 100;
   };
   
@@ -40,15 +32,12 @@ export const StyledMessage: React.FC<{ content: string }> = ({ content }) => {
     <div>
       {content.split("\n").map((block, index) => {
         if (isHeading(block)) {
-          return <Heading1 key={index}>{block}</Heading1>;
+          return <Heading1 key={index}>{block.slice(2)}</Heading1>; // Remove the '# ' from the heading
         }
         if (isTitle(block)) {
-          return <Heading1 key={index}>{block}</Heading1>;
+          return <Heading1 key={index}>{block.slice(1, -1)}</Heading1>; // Remove the quotes from the title
         }
-        if (isSentence(block)) {
-          return <Paragraph key={index} text={block} />;
-        }
-        if (isParagraph(block)) {
+        if (isSentence(block) || isParagraph(block)) {
           return <Paragraph key={index} text={block} />;
         }
         return <Paragraph key={index} text={block} />;
