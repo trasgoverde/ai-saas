@@ -42,7 +42,7 @@ const BlogSeoPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.prompt };
+      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.prompt || '' };
       const newMessages = [...messages, userMessage];
 
       // Send a request to OpenAI to generate content
