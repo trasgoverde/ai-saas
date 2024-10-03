@@ -33,10 +33,11 @@ interface ResultResponse {
   result: string;
 }
 
-export default function CrewAIForm() {
+export default function TaxonomyBuilder() {
   const [apiResponse, setApiResponse] = useState('');
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -48,6 +49,7 @@ export default function CrewAIForm() {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await fetch('http://localhost:8000/generate/', {
         method: 'POST',
@@ -72,7 +74,10 @@ export default function CrewAIForm() {
 
       const data: ApiResponse = await response.json();
       
-      // Poll for results
+      if (!data || !data.request_id) {
+        throw new Error('Invalid response from server');
+      }
+
       const result = await pollForResult(data.request_id);
       setApiResponse(result);
       setMessages(prev => [
@@ -82,7 +87,7 @@ export default function CrewAIForm() {
       ]);
     } catch (error) {
       console.error('Error:', error);
-      setApiResponse('An error occurred while processing your request.');
+      setError('An error occurred while processing your request. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -95,17 +100,29 @@ export default function CrewAIForm() {
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       try {
         const response = await fetch(`http://localhost:8000/status/${requestId}`);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
         const data = await response.json();
+
+        if (!data) {
+          throw new Error('Invalid response from server');
+        }
 
         if (data.status === 'completed') {
           const resultResponse = await fetch(`http://localhost:8000/result/${requestId}`);
+          if (!resultResponse.ok) {
+            throw new Error(`Error: ${resultResponse.statusText}`);
+          }
+
           const resultData: ResultResponse = await resultResponse.json();
-          return resultData.result;
+          return resultData.result || 'No result available';
         } else if (data.status === 'failed') {
-          throw new Error(`Task failed: ${data.error}`);
+          throw new Error(`Task failed: ${data.error || 'Unknown error'}`);
         }
 
-        setApiResponse(`Status: ${data.status}, Progress: ${data.progress}%`);
+        setApiResponse(`Status: ${data.status || 'Unknown'}, Progress: ${data.progress || 0}%`);
       } catch (error) {
         console.error('Error polling for result:', error);
         throw error;
@@ -118,26 +135,39 @@ export default function CrewAIForm() {
   };
 
   const renderResult = (content: string) => {
-    const sections = content.split('**').filter(s => s.trim());
+    if (!content) return <p>No content available</p>;
+
+    const sections = content.split(/\d+\./).filter(s => s.trim());
+    const icons = [Star, Zap, Lightbulb, Users, GitBranch];
+
     return (
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900">{sections[0]}</h2>
-        {sections.slice(1).map((section, index) => {
-          const [title, ...content] = section.split('\n');
-          const Icon = [Star, Zap, Lightbulb, Users, GitBranch][index] || FileText;
+        <h2 className="text-2xl font-bold text-gray-900">Value Chain Analysis</h2>
+        <p className="text-gray-700">
+          The value chain for the analyzed technologies involves the following key aspects:
+        </p>
+        {sections.map((section, index) => {
+          const [title, ...contentParts] = section.split(':').map(s => s.trim());
+          const Icon = icons[index] || FileText;
           return (
             <Card key={index} className="overflow-hidden">
               <CardHeader className="bg-gray-50 flex items-center space-x-2 p-4">
                 <div className="flex items-center space-x-2 w-full">
                   <Icon className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                  <h3 className="text-lg font-semibold text-gray-700 flex-grow">{title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-700 flex-grow">
+                    {index + 1}. {title || `Section ${index + 1}`}
+                  </h3>
                 </div>
               </CardHeader>
               <CardContent className="pt-4">
                 <div className="prose prose-sm max-w-none">
-                  {content.map((paragraph, pIndex) => (
-                    <p key={pIndex} className="mb-2 text-justify">{paragraph}</p>
-                  ))}
+                  {contentParts.length > 0 ? (
+                    contentParts.map((paragraph, pIndex) => (
+                      <p key={pIndex} className="mb-2 text-justify">{paragraph}</p>
+                    ))
+                  ) : (
+                    <p>No content available for this section.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -157,54 +187,57 @@ export default function CrewAIForm() {
         bgColor="bg-orange-700/10"
       />
       <div className="px-4 lg:px-8">
-        <div>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2">
-              <FormField
-                name="taxonomyNode"
-                render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-5">
-                    <FormLabel>First Product Name</FormLabel>
-                    <FormControl className="m-0 p-0">
-                      <Input
-                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        disabled={isLoading}
-                        placeholder="Enter first product name"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="taxonomyRelated"
-                render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-5">
-                    <FormLabel>Second Market Name</FormLabel>
-                    <FormControl className="m-0 p-0">
-                      <Input
-                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        disabled={isLoading}
-                        placeholder="Enter second market name"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
-                Generate
-              </Button>
-            </form>
-          </Form>
-        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2">
+            <FormField
+              name="taxonomyNode"
+              render={({ field }) => (
+                <FormItem className="col-span-12 lg:col-span-5">
+                  <FormLabel>First Product Name</FormLabel>
+                  <FormControl className="m-0 p-0">
+                    <Input
+                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      disabled={isLoading}
+                      placeholder="Enter first product name"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="taxonomyRelated"
+              render={({ field }) => (
+                <FormItem className="col-span-12 lg:col-span-5">
+                  <FormLabel>Second Market Name</FormLabel>
+                  <FormControl className="m-0 p-0">
+                    <Input
+                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      disabled={isLoading}
+                      placeholder="Enter second market name"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size="icon">
+              Generate
+            </Button>
+          </form>
+        </Form>
         <div className="space-y-4 mt-4">
           {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
+          {error && (
+            <div className="p-4 rounded-lg w-full bg-red-100 text-red-700">
+              {error}
+            </div>
+          )}
+          {messages.length === 0 && !isLoading && !error && (
             <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
