@@ -17,8 +17,8 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
 
 const formSchema = z.object({
-  taxonomyNode: z.string().min(1, "First product name is required"),
-  taxonomyRelated: z.string().min(1, "Second market name is required"),
+  taxonomyNode: z.string().min(1, "Industry name is required"),
+  taxonomyRelated: z.string().min(1, "Technology name is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -193,12 +193,12 @@ export default function TaxonomyBuilder() {
               name="taxonomyNode"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-5">
-                  <FormLabel>First Product Name</FormLabel>
+                  <FormLabel>Technology</FormLabel>
                   <FormControl className="m-0 p-0">
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading}
-                      placeholder="Enter first product name"
+                      placeholder="Enter a Technology name"
                       {...field}
                     />
                   </FormControl>
@@ -209,12 +209,12 @@ export default function TaxonomyBuilder() {
               name="taxonomyRelated"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-5">
-                  <FormLabel>Second Market Name</FormLabel>
+                  <FormLabel>Industry</FormLabel>
                   <FormControl className="m-0 p-0">
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading}
-                      placeholder="Enter second market name"
+                      placeholder="Enter an Industry market name"
                       {...field}
                     />
                   </FormControl>
