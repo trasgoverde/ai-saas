@@ -1,3 +1,9 @@
 flask 
 crewai 
-langchain-google-genai
+openai
+fire
+loguru
+datasets
+typer
+rich
+fastapi

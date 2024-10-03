@@ -1,56 +1,96 @@
 from flask import Flask, request, jsonify
-import os
+from flask_cors import CORS
+import requests
 from crewai import Agent, Task, Process, Crew
-from langchain_google_genai import ChatGoogleGenerativeAI
 import logging
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
-# Set Google API Key
-os.environ["GOOGLE_API_KEY"] = "YOUR_GOOGLE_API_KEY"
-llm = ChatGoogleGenerativeAI(
-    model="gemini-1.5-flash",
-    verbose=True,
-    temperature=0.5,
-    google_api_key=os.getenv("GOOGLE_API_KEY")
-)
+# Ollama API endpoint
+OLLAMA_API_URL = "http://localhost:11434/api/generate"
+
+# Helper function to interact with Ollama's API
+def generate_ollama_response(prompt):
+    try:
+        response = requests.post(
+            OLLAMA_API_URL,
+            json={"model": "llama3.1", "prompt": prompt},  # Change the model name if needed
+        )
+        response.raise_for_status()
+        return response.json().get('text', '')  # Assuming the response contains 'text'
+    except Exception as e:
+        logging.error(f"Error generating response from Ollama: {e}")
+        return None
 
 # Define agents
+class Agent:
+    def __init__(self, role, goal, backstory, verbose):
+        self.role = role
+        self.goal = goal
+        self.backstory = backstory
+        self.verbose = verbose
+
+    def respond(self, task_description):
+        prompt = f"Role: {self.role}\nGoal: {self.goal}\nBackstory: {self.backstory}\nTask: {task_description}"
+        return generate_ollama_response(prompt)
+
+# Agents
 router = Agent(
     role="Router Agent",
     goal="Receive input from the user and delegate it to the appropriate department agent based on the request.",
     backstory="You are the router agent responsible for understanding the user's request and directing it to the appropriate department within the office.",
-    verbose=True,
-    allow_delegation=True,
-    llm=llm
+    verbose=True
 )
 
 marketing = Agent(
     role="Marketing Department",
     goal="Handle marketing-related inquiries and provide relevant information and strategies.",
     backstory="You are a marketing expert responsible for addressing queries related to marketing strategies, market analysis, and promotional activities.",
-    verbose=True,
-    llm=llm
+    verbose=True
 )
 
 grader = Agent(
     role="Grader Agent",
     goal="Evaluate the responses from the department agents to ensure they are correct and do not contain hallucinations.",
     backstory="You are a grader responsible for evaluating the accuracy and relevance of responses provided by other agents to ensure they meet quality standards.",
-    verbose=True,
-    llm=llm
+    verbose=True
 )
 
 answering_agent = Agent(
     role="Answering Agent",
     goal="Print the final answer after it has been graded for correctness and relevance.",
     backstory="You are the answering agent responsible for delivering the final, validated response to the user.",
-    verbose=True,
-    llm=llm
+    verbose=True
 )
+
+# Task management class
+class Task:
+    def __init__(self, description, agent):
+        self.description = description
+        self.agent = agent
+
+    def run(self):
+        return self.agent.respond(self.description)
+
+# Crew class to run tasks in sequence
+class Crew:
+    def __init__(self, agents, tasks, verbose=True, process='SEQUENTIAL'):
+        self.agents = agents
+        self.tasks = tasks
+        self.verbose = verbose
+        self.process = process
+
+    def run(self):
+        result = None
+        for task in self.tasks:
+            result = task.run()
+            if self.verbose:
+                logging.info(f"Task completed with result: {result}")
+        return result
 
 @app.route('/process_request', methods=['POST'])
 def process_request():
@@ -60,11 +100,11 @@ def process_request():
 
     # Tasks
     router_task = Task(
-        description=f"""Receive user input: "{user_input}" and delegate it to the appropriate department agent based on the request. """,
+        description=f"""Receive user input: "{user_input}" and delegate it to the appropriate department agent based on the request.""",
         agent=router
     )
     marketing_task = Task(
-        description=f"""Handle marketing-related inquiries and provide relevant information and strategies for the user input: "{user_input}" """,
+        description=f"""Handle marketing-related inquiries and provide relevant information and strategies for the user input: "{user_input}".""",
         agent=marketing
     )
     grader_task = Task(
@@ -81,7 +121,7 @@ def process_request():
         agents=[router, marketing, grader, answering_agent],
         tasks=[router_task, marketing_task, grader_task, answering_task],
         verbose=True,
-        process=Process.SEQUENTIAL
+        process='SEQUENTIAL'
     )
 
     try:

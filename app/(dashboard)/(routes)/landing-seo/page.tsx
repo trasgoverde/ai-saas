@@ -26,7 +26,22 @@ const LandingSeoPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([]);
-  const [selectedTone, setSelectedTone] = useState("friendly"); // Default tone
+  
+  // Define the tones object
+  const tones = {
+    friendly: "friendly tone",
+    luxury: "luxury tone",
+    relaxed: "relaxed tone",
+    professional: "professional tone",
+    bold: "bold tone",
+    adventurous: "adventurous tone",
+    witty: "witty tone",
+    persuasive: "persuasive tone",
+    empathetic: "empathetic tone",
+  };
+
+  // Explicitly type selectedTone to be one of the keys of tones
+  const [selectedTone, setSelectedTone] = useState<keyof typeof tones>("friendly");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,24 +56,12 @@ const LandingSeoPage = () => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const tones = {
-    friendly: "friendly tone",
-    luxury: "luxury tone",
-    relaxed: "relaxed tone",
-    professional: "professional tone",
-    bold: "bold tone",
-    adventurous: "adventurous tone",
-    witty: "witty tone",
-    persuasive: "persuasive tone",
-    empathetic: "empathetic tone",
-  };
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const { product, benefit1, benefit2, benefit3, prompt } = values;
       const contentPrompt = `Write a landing page headline for ${product} with the following benefits: ${benefit1}, ${benefit2}, ${benefit3}. Use a ${tones[selectedTone]}.\n${prompt}`;
 
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: contentPrompt };
+      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: contentPrompt || '' };
       const newMessages = [...messages, userMessage];
 
       const response = await axios.post("/api/landing-seo", { messages: newMessages, prompt: contentPrompt });
@@ -82,9 +85,19 @@ const LandingSeoPage = () => {
     }
   };
 
-  const handleToneChange = (tone) => {
+  const handleToneChange = (tone: keyof typeof tones) => {
     setSelectedTone(tone);
   };
+
+    // Helper function to safely get content as string
+    const getMessageContent = (message: OpenAI.Chat.CreateChatCompletionRequestMessage): string => {
+      if (typeof message.content === 'string') {
+        return message.content;
+      } else if (Array.isArray(message.content)) {
+        return message.content.map(part => 'text' in part ? part.text : '').join('');
+      }
+      return '';
+    };
 
   return (
     <div>
@@ -176,7 +189,7 @@ const LandingSeoPage = () => {
               {Object.keys(tones).map((tone) => (
                 <Button
                   key={tone}
-                  onClick={() => handleToneChange(tone)}
+                  onClick={() => handleToneChange(tone as keyof typeof tones)}
                   className={`text-sm ${
                     selectedTone === tone ? "bg-violet-500 text-white" : "bg-gray-300 text-gray-600"
                   }`}
@@ -202,8 +215,7 @@ const LandingSeoPage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm"> {message.content}</p>
-              </div>
+                <p className="text-sm">{getMessageContent(message)}</p>              </div>
             ))}
           </div>
         </div>
